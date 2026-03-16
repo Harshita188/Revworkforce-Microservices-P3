@@ -116,8 +116,11 @@ public class LeaveService {
     public List<LeaveBalance> getBalances(Long employeeId) {
         return balanceRepository.findByEmployeeId(employeeId);
     }
-    public List<LeaveRequest> getPendingLeaves() {
-    return leaveRepository.findByStatus("PENDING");
+//     public List<LeaveRequest> getPendingLeaves() {
+//     return leaveRepository.findByStatus("PENDING");
+// }
+public List<LeaveRequest> getPendingLeaves() {
+    return leaveRepository.findByStatus(LeaveStatus.PENDING);
 }
 
     @Transactional
