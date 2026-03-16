@@ -19,7 +19,8 @@ public class ReportingService {
     public HRDashboardData getDashboardSummary() {
         long totalEmployees = 0;
         try {
-            totalEmployees = employeeClient.getEmployeeCount();
+            // totalEmployees = employeeClient.getEmployeeCount();
+            totalEmployees = employeeClient.getEmployeeCount().getBody();
         } catch (Exception e) {
             totalEmployees = -1;
         }
