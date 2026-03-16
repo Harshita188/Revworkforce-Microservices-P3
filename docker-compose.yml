@@ -1,0 +1,130 @@
+services:
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  eureka-server:
+    build: 
+      context: ./service-discovery
+      dockerfile: ../Dockerfile.template
+    ports:
+      - "8761:8761"
+    environment:
+      - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+      - EUREKA_CLIENT_FETCH_REGISTRY=false
+
+  config-server:
+    build:
+      context: ./config-server
+      dockerfile: ../Dockerfile.template
+    ports:
+      - "8888:8888"
+    depends_on:
+      - eureka-server
+    environment:
+      - SPRING_PROFILES_ACTIVE=native
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: ../Dockerfile.template
+    ports:
+      - "8080:8080"
+    depends_on:
+      - config-server
+    environment:
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - JWT_SECRET=${JWT_SECRET}
+
+  user-service:
+    build:
+      context: ./user-service
+      dockerfile: ../Dockerfile.template
+    depends_on:
+      - mysql
+      - config-server
+    environment:
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - JWT_SECRET=${JWT_SECRET}
+
+  employee-service:
+    build:
+      context: ./employee-service
+      dockerfile: ../Dockerfile.template
+    depends_on:
+      - mysql
+      - config-server
+    environment:
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - JWT_SECRET=${JWT_SECRET}
+
+  leave-service:
+    build:
+      context: ./leave-service
+      dockerfile: ../Dockerfile.template
+    depends_on:
+      - mysql
+      - config-server
+    environment:
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - JWT_SECRET=${JWT_SECRET}
+
+  performance-service:
+    build:
+      context: ./performance-service
+      dockerfile: ../Dockerfile.template
+    depends_on:
+      - mysql
+      - config-server
+    environment:
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - JWT_SECRET=${JWT_SECRET}
+
+  notification-service:
+    build:
+      context: ./notification-service
+      dockerfile: ../Dockerfile.template
+    depends_on:
+      - mysql
+      - config-server
+    environment:
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - JWT_SECRET=${JWT_SECRET}
+
+  reporting-service:
+    build:
+      context: ./reporting-service
+      dockerfile: ../Dockerfile.template
+    depends_on:
+      - config-server
+    environment:
+      - SPRING_CONFIG_IMPORT=configserver:http://config-server:8888
+      - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka/
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - JWT_SECRET=${JWT_SECRET}
+
+volumes:
+  mysql_data:

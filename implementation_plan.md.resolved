@@ -1,0 +1,31 @@
+# Implementation Plan - RevWorkforce API Documentation
+
+This plan outlines the generation of a comprehensive API documentation artifact for the RevWorkforce microservices project.
+
+## Proposed Changes
+
+### Documentation Artifact
+#### [NEW] [api_documentation.md](file:///C:/Users/harsh/.gemini/antigravity/brain/e646fef1-1c27-4cc2-ad7f-ec2678affa18/api_documentation.md)
+I will create a centralized documentation file containing:
+- **Service Overviews**: Detailed descriptions of each microservice.
+- **Endpoint Documentation**: For each API, including HTTP methods, descriptions, headers, bodies, and role-based access.
+- **Dependency Flow**: A visualization of how services interact (Feign clients).
+- **Postman Collection Structure**: A suggested organization for manual testing.
+- **Testing Order**: A recommended sequence for validating the APIs.
+
+## Sections
+The documentation will be organized as follows:
+1. **AUTH APIs** (User Service)
+2. **EMPLOYEE APIs** (Employee Service)
+3. **DEPARTMENT APIs** (Employee Service)
+4. **DESIGNATION APIs** (Employee Service)
+5. **LEAVE APIs** (Leave Service)
+6. **PERFORMANCE APIs** (Performance Service)
+7. **NOTIFICATION APIs** (Notification Service)
+8. **REPORTING APIs** (Reporting Service)
+
+## Verification Plan
+### Manual Verification
+- I will cross-reference the generated documentation with the source code (controllers and DTOs) to ensure accuracy.
+- I will verify that the role-based access matches the `@PreAuthorize` annotations in the code.
+- I will verify that the inter-service dependencies match the Feign clients identified.

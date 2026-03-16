@@ -1,0 +1,285 @@
+# RevWorkforce - Comprehensive API Documentation
+
+RevWorkforce is a microservices-based HR management system built with Spring Boot. This documentation covers all functional endpoints across the ecosystem.
+
+## Global Security & Access
+- All requests must go through the **API Gateway** (default port: `8080`).
+- Protected endpoints require a **JWT Bearer Token** in the `Authorization` header.
+- Roles: `ADMIN`, `MANAGER`, `HR`, `EMPLOYEE`.
+
+---
+
+## AUTH APIs (User Service)
+Handles authentication and user management.
+
+### [POST] Login
+- **URL**: `/auth/login`
+- **Description**: Authenticates a user and returns a JWT token.
+- **Role**: PUBLIC
+- **Request Body**:
+  ```json
+  {
+    "username": "admin",
+    "password": "password123"
+  }
+  ```
+- **Example Response**:
+  ```json
+  {
+    "token": "eyJhbGciOiJIUzI1NiJ9...",
+    "username": "admin",
+    "email": "admin@revworkforce.com",
+    "role": "ADMIN",
+    "tokenType": "Bearer"
+  }
+  ```
+
+### [PUT] Change Password
+- **URL**: `/auth/change-password`
+- **Description**: Updates the current user's password.
+- **Headers**: `Authorization: Bearer <token>`
+- **Role**: AUTHENTICATED
+- **Request Body**:
+  ```json
+  {
+    "oldPassword": "oldPassword123",
+    "newPassword": "newPassword456"
+  }
+  ```
+
+### [POST] Create User
+- **URL**: `/users`
+- **Description**: Registers a new user.
+- **Headers**: `Authorization: Bearer <token>`
+- **Role**: `ADMIN`
+- **Request Body**:
+  ```json
+  {
+    "username": "jdoe",
+    "password": "password123",
+    "email": "jdoe@revworkforce.com",
+    "role": "EMPLOYEE"
+  }
+  ```
+
+---
+
+## EMPLOYEE APIs (Employee Service)
+Manages employee profiles and lifecycle.
+
+### [POST] Create Employee
+- **URL**: `/employees`
+- **Description**: Creates a new employee profile.
+- **Role**: `ADMIN`, `HR`
+- **Request Body**:
+  ```json
+  {
+    "firstName": "John",
+    "lastName": "Doe",
+    "email": "john.doe@revworkforce.com",
+    "phone": "1234567890",
+    "dateOfJoining": "2024-03-14",
+    "departmentId": 1,
+    "designationId": 2,
+    "userId": 5
+  }
+  ```
+
+### [GET] Get All Employees
+- **URL**: `/employees`
+- **Description**: Retrieves a list of all employees.
+- **Role**: AUTHENTICATED
+
+### [GET] Get Employee By ID
+- **URL**: `/employees/{id}`
+- **Description**: Retrieves details of a specific employee.
+- **Role**: AUTHENTICATED
+
+### [GET] Get Employee Detailed (with User)
+- **URL**: `/employees/with-user/{id}`
+- **Description**: Retrieves employee details joined with user account info.
+- **Role**: AUTHENTICATED
+
+---
+
+## DEPARTMENT & DESIGNATION APIs (Employee Service)
+
+### [POST] Create Department
+- **URL**: `/departments`
+- **Description**: Adds a new department.
+- **Role**: `ADMIN`, `HR`
+- **Request Body**: `{"name": "Engineering"}`
+
+### [GET] Get All Departments
+- **URL**: `/departments`
+- **Description**: Lists all departments.
+
+### [POST] Create Designation
+- **URL**: `/designations`
+- **Description**: Adds a new job designation.
+- **Role**: `ADMIN`, `HR`
+- **Request Body**: `{"title": "Senior Developer"}`
+
+---
+
+## LEAVE APIs (Leave Service)
+Manages leave requests and balances.
+
+### [POST] Apply for Leave
+- **URL**: `/api/leaves/apply`
+- **Description**: Submits a new leave request.
+- **Role**: `EMPLOYEE`
+- **Request Body**:
+  ```json
+  {
+    "employeeId": 5,
+    "leaveType": "SICK_LEAVE",
+    "startDate": "2026-04-01",
+    "endDate": "2026-04-02",
+    "reason": "Feeling unwell"
+  }
+  ```
+
+### [POST] Approve/Reject Leave
+- **URL**: `/api/leaves/approve`
+- **Description**: Updates leave request status.
+- **Role**: `ADMIN`, `MANAGER`
+- **Request Body**:
+  ```json
+  {
+    "requestId": 12,
+    "status": "APPROVED",
+    "managerRemarks": "Approved"
+  }
+  ```
+
+### [GET] Get Leave Balance
+- **URL**: `/api/leaves/balances/{employeeId}`
+- **Description**: Fetches current leave balances for an employee.
+- **Role**: AUTHENTICATED
+
+---
+
+## PERFORMANCE APIs (Performance Service)
+Handles goals and reviews.
+
+### [POST] Submit Self-Review
+- **URL**: `/api/performance/self-review`
+- **Description**: Employee submits their own performance appraisal.
+- **Parameters**: `employeeId=5`
+- **Request Body**: `"I have completed all my tasks ahead of schedule..."`
+
+### [POST] Provide Manager Feedback
+- **URL**: `/api/performance/manager-feedback/{reviewId}`
+- **Description**: Manager provides feedback and rating.
+- **Role**: `MANAGER`, `ADMIN`
+- **Parameters**: `managerId=2&feedback=Great job!&rating=5`
+
+### [POST] Add Goal
+- **URL**: `/api/performance/goals`
+- **Description**: Assigns a new performance goal to an employee.
+- **Role**: `MANAGER`, `ADMIN`
+- **Request Body**:
+  ```json
+  {
+    "employeeId": 5,
+    "title": "Learn Spring Cloud",
+    "description": "Complete the microservices course",
+    "targetDate": "2026-06-30"
+  }
+  ```
+
+---
+
+## NOTIFICATION APIs (Notification Service)
+
+### [POST] Send Notification
+- **URL**: `/api/notifications/send`
+- **Description**: Sends a message to a specific employee.
+- **Internal/External**: Can be called by other services or directly.
+- **Request Body**:
+  ```json
+  {
+    "recipientId": 5,
+    "message": "Your leave has been approved",
+    "type": "LEAVE_STATUS"
+  }
+  ```
+
+### [GET] Get Notifications
+- **URL**: `/api/notifications/{employeeId}`
+- **Description**: Retrieves unread notifications for a user.
+
+---
+
+## REPORTING APIs (Reporting Service)
+
+### [GET] Get Dashboard Data
+- **URL**: `/api/reports/dashboard`
+- **Description**: Returns aggregated metrics (Total Employees, Pending Leaves, etc.).
+- **Role**: `ADMIN`
+- **Response Example**:
+  ```json
+  {
+    "totalEmployees": 150,
+    "pendingLeavesCount": 8,
+    "openPerformanceReviews": 12
+  }
+  ```
+
+---
+
+## Inter-Service Dependency Flow
+
+```mermaid
+graph TD
+    Gateway[API Gateway] --> UserSvc[User Service]
+    Gateway --> EmpSvc[Employee Service]
+    Gateway --> LeaveSvc[Leave Service]
+    Gateway --> PerfSvc[Performance Service]
+    Gateway --> NotifSvc[Notification Service]
+    Gateway --> ReportSvc[Reporting Service]
+
+    LeaveSvc -- Feign --> NotifSvc
+    ReportSvc -- Feign --> EmpSvc
+    EmpSvc -- Feign --> UserSvc
+```
+
+### Key Feign Interactions
+1. **Employee Service** calls **User Service** to fetch account details for a profile.
+2. **Leave Service** calls **Notification Service** to alert employees when leave status changes.
+3. **Reporting Service** calls **Employee Service** to get headcount for the dashboard.
+
+---
+
+## Recommended Testing Order
+1. **User Service**: Login and retrieve token.
+2. **Employee Service**: Create departments, designations, and then employees.
+3. **Leave Service**: Initialize balances and then submit a leave request.
+4. **Performance Service**: Add goals and submit reviews.
+5. **Notification Service**: Verify alerts are triggered by Leave/Performance actions.
+6. **Reporting Service**: Verify dashboard metrics reflect created data.
+
+---
+
+## Suggested Postman Structure
+- **RevWorkforce Collection**
+    - **AUTH**
+        - Login
+        - Change Password
+    - **ADMIN - Setup**
+        - Create User
+        - Create Department
+        - Create Designation
+        - Create Employee
+    - **EMPLOYEE - Actions**
+        - Apply Leave
+        - View Balance
+        - Submit Self-Review
+        - View Notifications
+    - **MANAGER - Actions**
+        - Approve Leave
+        - Provide Feedback
+        - Add Goal
+    - **REPORTING**
+        - Get Dashboard
