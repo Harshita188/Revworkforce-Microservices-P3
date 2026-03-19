@@ -1,0 +1,106 @@
+.performance-container {
+    padding: 16px;
+
+    .page-header {
+        margin-bottom: 24px;
+        h1 {
+            margin: 0;
+            color: #333;
+            font-weight: 500;
+        }
+        .subtitle {
+            color: #666;
+            margin-top: 8px;
+        }
+    }
+
+    .review-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 24px;
+
+        @media (min-width: 900px) {
+            grid-template-columns: 2fr 1fr;
+        }
+
+        .review-card {
+            .rating-section {
+                margin-bottom: 24px;
+                h3 { margin-bottom: 16px; color: #444; }
+                
+                .slider-container {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    margin-bottom: 8px;
+
+                    mat-slider {
+                        flex-grow: 1;
+                        max-width: 400px;
+                    }
+                    span {
+                        color: #666;
+                        font-size: 14px;
+                    }
+                }
+                
+                .current-rating {
+                    font-size: 16px;
+                    color: #3f51b5;
+                }
+            }
+
+            .full-width {
+                width: 100%;
+                &.mt-16 { margin-top: 16px; }
+            }
+
+            .actions {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: 16px;
+            }
+        }
+
+        .history-card {
+            .past-review-item {
+                padding: 16px 0;
+                
+                .review-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 8px;
+
+                    .cycle {
+                        font-weight: 600;
+                        color: #333;
+                    }
+
+                    .rating-badge {
+                        background-color: #e3f2fd;
+                        color: #1565c0;
+                        padding: 4px 8px;
+                        border-radius: 4px;
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                }
+
+                .manager-feedback {
+                    color: #555;
+                    font-size: 14px;
+                    line-height: 1.5;
+                    margin-bottom: 16px;
+                }
+            }
+
+            .no-data {
+                padding: 32px;
+                text-align: center;
+                color: #999;
+                font-style: italic;
+            }
+        }
+    }
+}

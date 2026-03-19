@@ -1,0 +1,61 @@
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+
+    h1 {
+        margin: 0;
+        color: #333;
+        font-weight: 500;
+    }
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+
+    table {
+        width: 100%;
+
+        th.mat-header-cell {
+            background-color: #fafafa;
+            color: #555;
+            font-weight: 600;
+        }
+
+        td.mat-cell {
+            padding: 16px 24px;
+            color: #444;
+        }
+
+        .truncate-text {
+            display: inline-block;
+            max-width: 250px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: bottom;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+
+            &.approved { background-color: #e8f5e9; color: #2e7d32; }
+            &.pending { background-color: #fff3e0; color: #ef6c00; }
+            &.rejected { background-color: #ffebee; color: #c62828; }
+        }
+        
+        .empty-cell {
+            padding: 48px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+    }
+}

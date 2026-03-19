@@ -1,0 +1,48 @@
+.dashboard-container {
+    h1 {
+        margin-bottom: 24px;
+        color: #333;
+        font-weight: 500;
+    }
+
+    .kpi-row {
+        display: flex;
+        gap: 24px;
+        margin-bottom: 24px;
+        flex-wrap: wrap;
+
+        .kpi-card {
+            flex: 1;
+            min-width: 250px;
+            
+            mat-card-header {
+                display: flex;
+                align-items: center;
+
+                mat-icon {
+                    font-size: 40px;
+                    width: 40px;
+                    height: 40px;
+                    margin-right: 16px;
+                }
+
+                mat-card-title {
+                    font-size: 2rem;
+                    margin-bottom: 4px;
+                }
+            }
+        }
+    }
+
+    .charts-row {
+        display: flex;
+        gap: 24px;
+        flex-wrap: wrap;
+
+        .chart-card {
+            flex: 1;
+            min-width: 400px;
+            padding-bottom: 24px;
+        }
+    }
+}

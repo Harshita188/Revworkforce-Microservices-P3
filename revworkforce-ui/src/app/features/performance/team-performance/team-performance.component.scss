@@ -1,0 +1,121 @@
+.page-header {
+    margin-bottom: 24px;
+    h1 {
+        margin: 0;
+        color: #333;
+        font-weight: 500;
+    }
+    .subtitle {
+        color: #666;
+        margin-top: 8px;
+    }
+}
+
+table {
+    width: 100%;
+}
+
+tr.detail-row {
+    height: 0;
+}
+
+tr.element-row:not(.expanded-row):hover {
+    background: #f5f5f5;
+    cursor: pointer;
+}
+
+tr.element-row:not(.expanded-row):active {
+    background: #efefef;
+}
+
+.element-row td {
+    border-bottom-width: 0;
+}
+
+.element-detail {
+    overflow: hidden;
+    display: flex;
+    padding: 0 16px;
+    /* Basic CSS handling for animation fallback */
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out, padding 0.3s ease-out;
+
+    /* Applied when ngIf is active, simple trick */
+    & {
+        max-height: 1000px;
+        opacity: 1;
+        padding: 16px 24px;
+    }
+    
+    .detail-content {
+        width: 100%;
+        background-color: #fcfcfc;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        padding: 24px;
+        margin-bottom: 16px;
+
+        h4 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            color: #3f51b5;
+        }
+
+        .comments {
+            color: #444;
+            line-height: 1.5;
+            background: #fff;
+            padding: 12px;
+            border-left: 4px solid #3f51b5;
+            border-radius: 4px;
+        }
+
+        .my-3 {
+            margin: 24px 0;
+        }
+
+        .completed-eval {
+            background: #e8f5e9;
+            padding: 16px;
+            border-radius: 4px;
+            color: #2e7d32;
+        }
+
+        .full-width {
+            width: 100%;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
+    }
+}
+
+.rating-badge {
+    background-color: #e8eaf6;
+    color: #3f51b5;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.status-badge {
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+
+    &.completed { background-color: #e8f5e9; color: #2e7d32; }
+    &.pending { background-color: #fff3e0; color: #ef6c00; }
+}
+
+.empty-cell {
+    padding: 48px;
+    text-align: center;
+    color: #999;
+    font-style: italic;
+}
