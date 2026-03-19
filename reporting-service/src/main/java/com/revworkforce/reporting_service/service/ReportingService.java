@@ -9,6 +9,7 @@ import com.revworkforce.reporting_service.client.LeaveClient;
 import com.revworkforce.reporting_service.client.PerformanceClient;
 
 
+
 @Service
 @RequiredArgsConstructor
 public class ReportingService {
@@ -20,7 +21,7 @@ public class ReportingService {
         long totalEmployees = 0;
         try {
             // totalEmployees = employeeClient.getEmployeeCount();
-            totalEmployees = employeeClient.getEmployeeCount().getBody();
+            totalEmployees = employeeClient.getEmployeeCount();
         } catch (Exception e) {
             totalEmployees = -1;
         }
